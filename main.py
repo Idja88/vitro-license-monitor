@@ -1,9 +1,7 @@
-import requests
-from bs4 import BeautifulSoup
-from openpyxl import Workbook
-from openpyxl import load_workbook
 from datetime import datetime
-
+import requests
+from bs4 import BeautifulSoup as bs
+from openpyxl import Workbook, load_workbook
 
 url = ''
 with open('C:\Program Files\Vitro Software\Vitro\LicenseService\App_Data\License.txt') as lic_file:
@@ -12,8 +10,7 @@ with open('C:\Program Files\Vitro Software\Vitro\LicenseService\App_Data\License
 get_response = requests.get(url)
 
 if get_response.status_code == 200:
-    print('get 200')
-    get_soup = BeautifulSoup(get_response.text, 'html.parser')
+    get_soup = bs(get_response.text, 'html.parser')
     viewstate = get_soup.find('input', {'name': '__VIEWSTATE'})['value']
     viewstategenerator = get_soup.find('input', {'name': '__VIEWSTATEGENERATOR'})['value']
     eventvalidation = get_soup.find('input', {'name': '__EVENTVALIDATION'})['value']
@@ -33,8 +30,7 @@ payload = {
 post_response = requests.post(url, data=payload)
 
 if post_response.status_code == 200:
-    print('post 200')
-    post_soup = BeautifulSoup(post_response.text, 'html.parser')
+    post_soup = bs(post_response.text, 'html.parser')
     stat_element = post_soup.find(id="lblStat")
     current_connections = stat_element.text.strip()
     parts = current_connections.split(', ')
