@@ -2,9 +2,12 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as bs
 from openpyxl import Workbook, load_workbook
+import sys
 
-url = ''
-with open('C:\Program Files\Vitro Software\Vitro\LicenseService\App_Data\License.txt') as lic_file:
+url = sys.argv[1]
+license_file_path = sys.argv[2]
+
+with open(license_file_path) as lic_file:
     license = lic_file.read()
 
 get_response = requests.get(url)
